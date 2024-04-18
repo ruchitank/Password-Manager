@@ -18,7 +18,7 @@ const db = mysql.createConnection({
 
 app.post('/addpassword',(req,res) => {
     console.log("in add pass");
-    const {password, title} = req.body
+    const {password, title} = req.body;
     const hashedPassword = encrypt(password);
     
     db.query("INSERT INTO passwords (password,title,iv) VALUES (?,?,?)",
@@ -33,6 +33,40 @@ app.post('/addpassword',(req,res) => {
     }
     );
 });
+
+app.post('/updatepassword',(req,res) => {
+    console.log("in update function");
+    const {password, title, id} = req.body;
+    const hashedPassword = encrypt(password);
+    db.query("UPDATE passwords SET password = ?, iv = ? WHERE id = ?",
+    [hashedPassword.password, hashedPassword.iv, id],
+    (err, result) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.send("Success");
+        }
+    }
+    );
+}
+);
+
+app.post('/deletepassword',(req,res) => {
+    const {id} = req.body;
+    db.query("DELETE FROM passwords WHERE id=?",
+    [id],
+    (err, result) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            res.send("Success");
+        }
+    }
+    );
+}
+);
 
 app.get('/showpassword',(req,res) => {
     db.query('SELECT * FROM passwords;', (err,results) => {

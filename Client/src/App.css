@@ -53,4 +53,9 @@ button {
   font-size: 20px;
   font-family: Arial, Helvetica, sans-serif;
   cursor: pointer;
+  float: left;
+}
+
+.deleteData{
+  float: left;
 }
